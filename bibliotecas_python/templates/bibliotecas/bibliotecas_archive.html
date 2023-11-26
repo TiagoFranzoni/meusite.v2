@@ -1,0 +1,14 @@
+<html lang="pt">
+    <head>
+        <meta charset="UTF-8">
+    </head>
+    <body>
+        <ul>
+            {% for item in latest %}
+            <li>
+                <a href="/bibliotecas/{{ item.pk }}">{{ item.nome }} {{ item.descricao }}</a>
+            </li>
+            {% endfor %}
+        </ul>
+    </body>
+</html>
