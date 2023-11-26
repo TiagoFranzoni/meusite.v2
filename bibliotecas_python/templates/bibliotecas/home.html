@@ -1,10 +1,7 @@
-<html lang="pt">
-    <head>
-        <meta charset="UTF-8">
-        <title>Cadastro de Bibliotecas do Python</title>
-    </head>
-    <body>
-        <h1>Cadastro de Bibliotecas do Python</h1>
-        <a href="bibliotecas/">Bibliotecas Python</a>
-    </body>
-</html>
+{% extends "base.html" %}
+{% block content %}
+    <div class="page-header">
+        <h2>Olá {{ user.first_name }}</h2>
+    </div>
+    <a href="bibliotecas/">Bibliotecas do Python</a>
+{% endblock %}

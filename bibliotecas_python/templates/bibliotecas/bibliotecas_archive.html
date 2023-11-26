@@ -1,14 +1,24 @@
-<html lang="pt">
-    <head>
-        <meta charset="UTF-8">
-    </head>
-    <body>
-        <ul>
+{% extends "base.html" %}
+{% block content %}
+    <div class="page_header">
+        <h2>Bibliotecas</h2>
+    </div>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Nome</th>
+                <th>Ano de criação</th>
+                <th>Open Source</th>
+            </tr>
+        </thead>
+        <tbody>
             {% for item in latest %}
-            <li>
-                <a href="/bibliotecas/{{ item.pk }}">{{ item.nome }} {{ item.descricao }}</a>
-            </li>
+                <tr>
+                    <td><a href="/bibliotecas/{{ item.pk }}">{{ item.nome }}</a></td>
+                    <td>{{ item.ano|default:"-" }}</td>
+                    <td>{{ item.openSource }}</td>
+                </tr>
             {% endfor %}
-        </ul>
-    </body>
-</html>
+        </tbody>
+    </table>
+{% endblock %}
