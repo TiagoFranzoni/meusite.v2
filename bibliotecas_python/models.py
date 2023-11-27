@@ -1,3 +1,4 @@
+"""Docstring"""
 from django.db.models import Model, BooleanField, CharField, TextField, URLField, IntegerField, DateTimeField
 
 # Create your models here.

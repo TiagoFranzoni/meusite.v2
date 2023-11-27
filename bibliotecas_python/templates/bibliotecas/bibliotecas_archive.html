@@ -4,6 +4,7 @@
         <h2>Bibliotecas</h2>
     </div>
     <table class="table">
+        <a class="btn btn-primary" href="/bibliotecas/criar/">Adicionar Biblioteca</a>
         <thead>
             <tr>
                 <th>Nome</th>
@@ -16,7 +17,13 @@
                 <tr>
                     <td><a href="/bibliotecas/{{ item.pk }}">{{ item.nome }}</a></td>
                     <td>{{ item.ano|default:"-" }}</td>
-                    <td>{{ item.openSource }}</td>
+                    <td>
+                        {% if item.openSource %}
+                            Sim
+                        {% else %}
+                            Não
+                        {% endif %}
+                    </td>                   
                 </tr>
             {% endfor %}
         </tbody>
