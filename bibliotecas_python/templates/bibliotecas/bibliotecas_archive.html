@@ -1,5 +1,13 @@
 {% extends "base.html" %}
 {% block content %}
+    <style>
+        .btn-extra-small {
+            padding: 0px 2px;
+            font-size: 11.5px;
+            line-height: 1.5;
+            margin-bottom: -50;
+        }
+    </style>
     <div class="page_header">
         <h2>Bibliotecas</h2>
     </div>
@@ -23,7 +31,13 @@
                         {% else %}
                             Não
                         {% endif %}
-                    </td>                   
+                    </td>
+                    <td>
+                        <form method="POST" action="/bibliotecas/{{ item.pk }}/deletar/">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-danger btn-extra-small">Excluir</button>
+                        </form>
+                    </td>
                 </tr>
             {% endfor %}
         </tbody>

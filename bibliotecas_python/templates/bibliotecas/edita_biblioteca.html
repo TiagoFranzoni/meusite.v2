@@ -1,14 +1,7 @@
 {% extends "base.html" %}
 {% block content %}
-{% if messages %}
-    <div class="messages">
-        {% for message in messages %}
-        <h3 class="alert alert-{{ message.tags }}" style="color: red; font-weight: bold;">{{ message }}</h3>
-        {% endfor %}
-    </div>
-{% endif %}
 <div class="page-header">
-    <h2>Nova Biblioteca</h2>
+    <h2>Editar Biblioteca</h2>
 </div>
 <form method="POST" action=".">
     {% csrf_token %}
@@ -29,8 +22,8 @@
             {% endif %}
         </div>
         {% endfor %}
-    <a class="btn btn-primary" href="/bibliotecas/">Cancelar</a>
-    <button type=submit class="btn btn-primary">Incluir</button>
+    <a class="btn btn-primary" href="/bibliotecas/{{ biblioteca.pk }}">Cancelar</a>
+    <button type=submit class="btn btn-primary">Salvar</button>
     </form>
     <script>
         $("input").addClass("form-control");

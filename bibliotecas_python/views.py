@@ -1,6 +1,7 @@
 """docstring"""
 from django.views.generic.dates import ArchiveIndexView
 from django.views.generic.detail import DetailView
+from django.views.generic.edit import UpdateView
 from bibliotecas_python.models import Bibliotecas
 from django.views.generic import View
 from django.shortcuts import render
@@ -9,6 +10,7 @@ from django.shortcuts import render, redirect
 from django.template import RequestContext
 from .forms import FormBiblioteca
 from django.contrib import messages
+from django.urls import reverse
 from .models import Bibliotecas
 
 
@@ -84,4 +86,36 @@ class AdicionaBibliotecas(View):
         else:
             self.context['form'] = form
             return render(request, self.template_name, self.context)
+
+
+class EditaBibliotecas(UpdateView):
+    """docstring"""
+    model = Bibliotecas
+    form_class = FormBiblioteca
+    template_name = 'bibliotecas/edita_biblioteca.html'
+    # context_object_name = 'biblioteca'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['biblioteca'] = self.object
+        return context
+
+    def get_success_url(self):
+        return '/bibliotecas/'
+
+
+class ExcluiBibliotecas(View):
+    """docstring"""
+    context = {}
+    
+    def get(self, request, *args, **kwargs):
+        """docstring"""
+        self.context['form'] = FormBiblioteca()
+        return render(request, self.template_name, self.context)
+
+    def post(self, request, *args, **kwargs):  # Mude 'delete' para 'post'
+        """docstring"""
+        biblioteca = Bibliotecas.objects.get(pk=kwargs['pk'])
+        biblioteca.delete()
+        return redirect('/bibliotecas/')
 

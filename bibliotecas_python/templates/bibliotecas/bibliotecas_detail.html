@@ -1,32 +1,48 @@
 {% extends "base.html" %}
 {% block content %}
-<dl class="dl-horizontal">
+    <style>
+        .button-container {
+            display: flex;
+            flex-direction: column;
+            align-items: end;
+        }
+    </style>
+    <a class="btn btn-primary" href="/bibliotecas/">Voltar</a>
+    <a class="btn btn-primary" href="/bibliotecas/{{ biblioteca.pk }}/editar/">Editar</a>
+    <br></br>
+    <dl class="dl-horizontal">
+        <dt><h4><strong>Nome:</dt></h4></strong>
+        <dd><h4><strong>{{ biblioteca.nome }}</dd></strong></h4>
 
-    <dt><h4><strong>Nome:</dt></h4></strong>
-    <dd><h4><strong>{{ biblioteca.nome }}</dd></strong></h4>
+        <dt>Descrição:</dt>
+        <dd>{{ biblioteca.descricao|default:"-" }}</dd>
 
-    <dt>Descrição:</dt>
-    <dd>{{ biblioteca.descricao|default:"-" }}</dd>
+        <dt>Ano de criação:</dt>
+        <dd>{{ biblioteca.ano|default:"-" }}</dd>
 
-    <dt>Ano de criação:</dt>
-    <dd>{{ biblioteca.ano|default:"-" }}</dd>
+        <dt>Nome do Criador:</dt>
+        <dd>{{ biblioteca.criador|default:"-" }}</dd>
 
-    <dt>Nome do Criador:</dt>
-    <dd>{{ biblioteca.criador|default:"-" }}</dd>
+        <dt>Mantenedor(res):</dt>
+        <dd>{{ biblioteca.mantenedor|default:"-" }}</dd>
 
-    <dt>Nome do Mantenedor:</dt>
-    <dd>{{ biblioteca.mantenedor|default:"-" }}</dd>
+        <dt>Open-Source:</dt>
+        <dd>{% if biblioteca.openSource %}Sim{% else %}Não{% endif %}</dd>
 
-    <dt>Open-Source:</dt>
-    <dd>{% if biblioteca.openSource %}Sim{% else %}Não{% endif %}</dd>
+        <dt>Site:</dt>
+        <dd>
+            {% if biblioteca.link %}
+                <a href="{{ biblioteca.link }}">{{ biblioteca.link }}</a>
+            {% else %}
+                Não informado
+            {% endif %}
+        </dd>
 
-    <dt>Site:</dt>
-    <dd>
-        {% if item.site %}
-            <a href="{{ item.site }}">{{ item.site }}</a>
-        {% else %}
-            Não informado
-        {% endif %}
-    </dd>
+        <dd class="button-container">
+            <form method="POST" action="/bibliotecas/{{ biblioteca.pk }}/deletar/">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-danger btn-extra-small">Excluir</button>
+            </form>
+        </dd>
+    </dl>
 {% endblock %}
-</dl>
