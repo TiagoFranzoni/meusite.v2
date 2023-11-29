@@ -26,16 +26,17 @@ class FormLogin(Form):
     def autentica(self, request):
         """Docstring"""
         username = self.cleaned_data['nome_de_usuario']
-        password = self.cleaned_data['senha']
+        password = self.cleaned_data['password']
         user = authenticate(request, username=username, password=password)
         if user is None:
             raise ValidationError("Dados de login inválidos.")
         login(request, user)
 
 
+
 class FormNovoUsuario(Form):
     """Docstring"""
-    nome_de_usuario = CharField()
+    nome_de_usuario = CharField(required=True)
     nome = CharField(required=False)
     email = EmailField(required=False)
     senha = CharField(widget=PasswordInput)
@@ -46,17 +47,19 @@ class FormNovoUsuario(Form):
         params = {
             'username': self.cleaned_data['nome_de_usuario'], 
             'email': self.cleaned_data['email'],
-            'password': self.cleaned_data['senha'],
+            # 'password': self.cleaned_data['senha'],
         }
         if self.cleaned_data['nome']:
             params['first_name'] = self.cleaned_data['nome']
-        User.objects.create_user(**params)
+        password = self.cleaned_data['senha']
+        User.objects.create_user(password=password, **params)
 
-    def clean_repeticao_senha(self):
-        """Docstring"""
-        senha1 = self.cleaned_data['senha']
-        senha2 = self.cleaned_data['repeticao_senha']
+    def clean(self):
+        cleaned_data = super().clean()
+        senha = cleaned_data.get('senha')
+        repeticao_senha = cleaned_data.get('repeticao_senha')
 
-        if senha1 != senha2:
+        if senha and repeticao_senha and senha != repeticao_senha:
             raise ValidationError("As senhas devem ser iguais.")
-        return senha2
+
+        return cleaned_data

@@ -1,12 +1,19 @@
 {% extends "base.html" %}
 {% block content %}
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}" role="alert">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endif %}
     <style>
         .page-header {
             margin-top: 0px;
         }
     </style>
     <div class="page-header">
-        <h2>Para Acessar é Preciso estar Logado</h2>
+        <h2>Para acessar é preciso estar logado</h2>
     </div>
     <form method="POST" action=".">
         {% csrf_token %}
@@ -22,10 +29,4 @@
             <a href="/criar_usuario/" class="btn btn-info">Cadastrar Novo Usuário</a>
             <input type="submit" class="btn btn-primary" value="Login">
         </div>
-    </form>
-    {% if error %}
-        <div class="alert alert-danger">
-            {{ error }}
-        </div>
-    {% endif %}
 {% endblock %}

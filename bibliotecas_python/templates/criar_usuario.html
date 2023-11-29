@@ -4,8 +4,6 @@
         <h2>Criação de Usuário</h2>
     </div>
     <form method="POST" action=".">
-    
-    <form method="POST" action=".">
         {% csrf_token %}
         {{ form.non_field_errors }}
         {% for field in form %}

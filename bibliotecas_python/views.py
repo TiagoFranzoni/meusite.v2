@@ -14,7 +14,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.views import LoginView
 from django.contrib.auth import authenticate, login
 from django.utils.decorators import method_decorator
-
+from django.contrib.auth.models import User
 
 @method_decorator(login_required(login_url='/login/'), name='dispatch')
 class Home(View):
@@ -113,15 +113,17 @@ class Login(View):
         """docstring"""
         form = FormLogin(request.POST)
         if form.is_valid():
-            username = form.cleaned_data.get('username')
-            password = form.cleaned_data.get('password')
+            username = form.cleaned_data.get('nome_de_usuario')
+            password = form.cleaned_data.get('senha')
             user = authenticate(request, username=username, password=password)
             if user is not None:
                 login(request, user)
                 return redirect('/')
-            self.context['form'] = form
-            self.context['error'] = 'Invalid username or password'
-            return render(request, self.template_name, self.context)
+            messages.warning(request, 'Nome de usuário ou senha inválidos')
+        self.context['form'] = form
+        return render(request, self.template_name, self.context)
+
+
 
     def clean(self):
         """docstring"""
@@ -152,17 +154,20 @@ class CriaUsuario(View):
         self.context['form'] = FormNovoUsuario()
         return render(request, self.template_name, self.context)
 
-
     def post(self, request, *args, **kwargs):
         """docstring"""
-        form = FormLogin(request.POST)
+        form = FormNovoUsuario(request.POST)
         if form.is_valid():
-            username = form.cleaned_data.get('username')
-            password = form.cleaned_data.get('password')
-            user = authenticate(request, username=username, password=password)
-            if user is not None:
-                login(request, user)
-                return redirect('/')
-            self.context['form'] = form
-            self.context['error'] = 'Username ou Senha inválidos'
-            return render(request, self.template_name, self.context)
+            username = form.cleaned_data.get('nome_de_usuario')
+            password = form.cleaned_data.get('senha')
+            first_name = form.cleaned_data.get('nome')
+            email = form.cleaned_data.get('email')
+            # user = User.objects.create_user(username=username, password=password)
+            user = User.objects.create_user(username=username, first_name=first_name, email=email)
+            user.set_password(password)
+            user.save()
+            # login(request, user)
+            messages.success(request, 'Usuário criado com sucesso!')
+            return redirect('/login/')
+        self.context['form'] = form
+        return render(request, self.template_name, self.context)
